@@ -40,6 +40,7 @@ Each release contains:
 * Linux static binaries (tar.gz) for amd64, arm64, and armv7
 * Debian (.deb) and RPM (.rpm) packages for the same architectures
 * Windows binaries (zip) for amd64 and arm64
+* Android ARM64 PIE binaries (tar.gz) for Termux
 * `checksums.txt` with SHA-256 checksums of the above
 
 Each release also pushes container images (amd64 and arm64) to
@@ -56,10 +57,11 @@ report the module version from the Go build info.
 ## Testing locally
 
 To build everything without tagging or publishing, install
-[GoReleaser](https://goreleaser.com/install/) and run:
+[GoReleaser](https://goreleaser.com/install/) and the Android NDK,
+then run:
 
 ```sh
-goreleaser release --snapshot --clean
+make release-snapshot
 ```
 
 The artifacts land in `dist/` (which is gitignored). In snapshot mode
@@ -67,3 +69,7 @@ the container images are built into the local Docker daemon as
 separate per-platform tags rather than a multi-arch manifest, and
 nothing is pushed. Building them requires a buildx builder with the
 docker-container driver (`docker buildx create --use`).
+
+The Makefile finds Homebrew's Android NDK automatically on macOS. On
+other systems, set `ANDROID_NDK_HOME` to the NDK directory or
+`ANDROID_CC` to an Android ARM64 API 24 (or newer) clang executable.

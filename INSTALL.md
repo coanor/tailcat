@@ -9,7 +9,23 @@ Prebuilt binaries are on the
 [Releases page](https://github.com/tailscale/tailcat/releases): static
 Linux binaries (tar.gz) plus Debian (.deb) and RPM (.rpm) packages for
 amd64, arm64, and armv7, and Windows binaries (zip) for amd64 and
-arm64.
+arm64. Android ARM64 PIE binaries for Termux are also available as
+tar.gz archives.
+
+## Android (Termux)
+
+On an ARM64 Android device, download and extract the release archive
+whose name ends in `android_arm64.tar.gz`, then install the binary in
+Termux:
+
+```sh
+install -m 700 tailcat "$PREFIX/bin/tailcat"
+tailcat version
+```
+
+Android 10 and newer restrict direct execution from app-private
+directories. The release is a dynamically linked PIE, allowing
+Termux to start it through Android's system linker.
 
 ## Homebrew (macOS)
 

@@ -43,6 +43,11 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
+      - name: Validate GoReleaser configuration
+        uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
+        with:
+          version: "~> v2"
+          args: check
       # Cross-build every GoReleaser release target with the release
       # build tags, using build-tags.txt the same way third-party
       # packagers do. (A test keeps that file in sync with
@@ -57,6 +62,9 @@ jobs:
           GOOS=linux   GOARCH=arm  GOARM=7  go build -o /dev/null -tags "$tags" ./cmd/tailcat
           GOOS=windows GOARCH=amd64         go build -o /dev/null -tags "$tags" ./cmd/tailcat
           GOOS=windows GOARCH=arm64         go build -o /dev/null -tags "$tags" ./cmd/tailcat
+          android_cc="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang"
+          test -x "$android_cc"
+          CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC="$android_cc" go build -buildmode=pie -o /dev/null -tags "$tags" ./cmd/tailcat
   cross:
     strategy:
       fail-fast: false

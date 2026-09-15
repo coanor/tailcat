@@ -18,6 +18,12 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
+      - name: Configure Android NDK compiler
+        run: |
+          android_cc="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android24-clang"
+          test -x "$android_cc"
+          echo "ANDROID_CC=$android_cc" >> "$GITHUB_ENV"
+          echo "TAILCAT_CONTAINER_IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/tailcat" >> "$GITHUB_ENV"
       # GoReleaser's dockers_v2 needs a buildx builder with the
       # docker-container driver to build multi-arch images.
       - uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
