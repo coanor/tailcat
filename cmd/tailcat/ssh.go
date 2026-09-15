@@ -101,7 +101,7 @@ func clientSSHMode(portOrIPPort string, skipDNSCheck bool, args []string) error 
 	if viaDNS && !skipDNSCheck {
 		refuseWideOpenDNS(dnsName, addrStr, portOrIPPort, sshUser)
 	}
-	exe, err := os.Executable()
+	exe, err := sshExecutable()
 	if err != nil {
 		log.Fatal(err)
 	}

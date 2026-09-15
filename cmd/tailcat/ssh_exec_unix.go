@@ -1,7 +1,7 @@
 // Copyright (c) Tailscale Inc & contributors
 // SPDX-License-Identifier: BSD-3-Clause
 
-//go:build unix && !ts_omit_ssh
+//go:build unix && !android && !ts_omit_ssh
 
 package main
 
