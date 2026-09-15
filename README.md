@@ -46,18 +46,45 @@ support ([#4](https://github.com/tailscale/tailcat/issues/4)).
 See [INSTALL.md](./INSTALL.md) for details on each, including notes
 for packagers building from source:
 
-| Method | Linux | macOS | Windows | FreeBSD,<br>OpenBSD | Browser<br>(js/wasm) |
-|--------|:-----:|:-----:|:-------:|:-------------------:|:--------------------:|
-| [Static binaries](INSTALL.md#prebuilt-binaries) | ✅ | | ✅ | | |
-| [.deb packages](INSTALL.md#prebuilt-binaries) | Debian, Ubuntu, ... | | | | |
-| [.rpm packages](INSTALL.md#prebuilt-binaries) | Red Hat, Fedora, ... | | | | |
-| [Homebrew](INSTALL.md#homebrew-macos) | | ✅ | | | |
-| [Scoop](INSTALL.md#scoop-windows) | | | ✅ | | |
-| [Container image](INSTALL.md#container-image) | ✅ | | | | |
-| [Nix](INSTALL.md#nix) | ✅ | ✅ | | | |
-| [AUR](INSTALL.md#arch-linux-aur) | Arch | | | | |
-| [conda-forge](INSTALL.md#conda-forge) | ✅ | ✅ | ✅ | | |
-| [Build from source](INSTALL.md#go-toolchain) | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Method | Linux | macOS | Windows | Android<br>(Termux) | FreeBSD,<br>OpenBSD | Browser<br>(js/wasm) |
+|--------|:-----:|:-----:|:-------:|:-------------------:|:-------------------:|:--------------------:|
+| [Static binaries](INSTALL.md#prebuilt-binaries) | ✅ | | ✅ | ✅ | | |
+| [.deb packages](INSTALL.md#prebuilt-binaries) | Debian, Ubuntu, ... | | | | | |
+| [.rpm packages](INSTALL.md#prebuilt-binaries) | Red Hat, Fedora, ... | | | | | |
+| [Homebrew](INSTALL.md#homebrew-macos) | | ✅ | | | | |
+| [Scoop](INSTALL.md#scoop-windows) | | | ✅ | | | |
+| [Container image](INSTALL.md#container-image) | ✅ | | | | | |
+| [Nix](INSTALL.md#nix) | ✅ | ✅ | | | | |
+| [AUR](INSTALL.md#arch-linux-aur) | Arch | | | | | |
+| [conda-forge](INSTALL.md#conda-forge) | ✅ | ✅ | ✅ | | | |
+| [Build from source](INSTALL.md#go-toolchain) | ✅ | ✅ | ✅ | | ✅ | ✅ |
+
+### Install a release on Android with Termux
+
+Tailcat's Android release supports ARM64 devices. Set the repository to the
+GitHub repository that published the release and set the version without the
+leading `v`, then run:
+
+```sh
+pkg install -y curl tar
+
+TAILCAT_REPOSITORY=coanor/tailcat
+TAILCAT_VERSION=0.6.1
+work_dir="$(mktemp -d)"
+
+curl -fL \
+  "https://github.com/${TAILCAT_REPOSITORY}/releases/download/v${TAILCAT_VERSION}/tailcat_${TAILCAT_VERSION}_android_arm64.tar.gz" \
+  | tar -xz -C "$work_dir"
+install -m 700 "$work_dir/tailcat" "$PREFIX/bin/tailcat"
+rm -r "$work_dir"
+
+tailcat version
+```
+
+The release must be public before Termux can download it. Copy the binary into
+`$PREFIX/bin`; Android doesn't allow executables to run directly from shared
+storage. See [the Android installation notes](INSTALL.md#android-termux) for
+more details.
 
 ## Usage
 
